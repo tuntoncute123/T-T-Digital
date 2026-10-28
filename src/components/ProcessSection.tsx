@@ -1,6 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { 
   Search, 
   Palette, 
@@ -8,25 +10,51 @@ import {
   CheckCircle2, 
   ShieldCheck, 
   Clock, 
-  FileCheck 
+  FileCheck,
+  Zap
 } from 'lucide-react';
 import { PROCESS_DATA } from '../data/landingData';
 import { HandDrawnMarker, AnimatedMarkerText } from './HandDrawnMarker';
+import { Interactive3DTilt } from './Interactive3DTilt';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export const ProcessSection: React.FC = () => {
-  const getStepIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Search': return <Search className="w-5 h-5 text-orange-600" />;
-      case 'Palette': return <Palette className="w-5 h-5 text-orange-600" />;
-      case 'Code2': return <Code2 className="w-5 h-5 text-orange-600" />;
-      case 'CheckCircle2': return <CheckCircle2 className="w-5 h-5 text-orange-600" />;
-      case 'ShieldCheck': return <ShieldCheck className="w-5 h-5 text-orange-600" />;
-      default: return <Code2 className="w-5 h-5 text-orange-600" />;
-    }
-  };
+  const sectionRef = useRef<HTMLElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current || !progressBarRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Animate progress line filling as user scrolls through this section
+      gsap.fromTo(
+        progressBarRef.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 70%',
+            end: 'bottom 85%',
+            scrub: 0.5,
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="process" className="py-16 sm:py-24 bg-[#fff8f2]/80 border-y border-orange-200/60 scroll-mt-20">
+    <section 
+      ref={sectionRef} 
+      id="process" 
+      className="relative py-16 sm:py-24 bg-[#fff8f2]/80 border-y border-orange-200/60 scroll-mt-20 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
@@ -56,57 +84,74 @@ export const ProcessSection: React.FC = () => {
           </p>
         </div>
 
-        {/* 5-Step Process Timeline */}
+        {/* GSAP Scroll-Triggered Animated Connection Progress Line (Desktop) */}
+        <div className="hidden lg:block relative mb-8 px-6">
+          <div className="h-1.5 w-full bg-orange-200/70 rounded-full overflow-hidden">
+            <div
+              ref={progressBarRef}
+              className="h-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 rounded-full origin-left shadow-sm"
+            />
+          </div>
+        </div>
+
+        {/* 5-Step Process Timeline with Interactive 3D Tilt Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {PROCESS_DATA.map((step, idx) => (
-            <div
+            <Interactive3DTilt
               key={step.step}
-              data-aos="fade-up"
-              data-aos-delay={idx * 100}
-              className="relative bg-white rounded-3xl p-6 sm:p-7 border border-orange-100 hover:border-orange-300 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between hover-lift group"
+              maxTilt={7}
+              scale={1.02}
+              enableGlare={true}
+              className="h-full"
             >
-              <div>
-                {/* Step Number & Duration Tag */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-11 h-11 rounded-2xl bg-orange-600 text-white font-black text-lg flex items-center justify-center shadow-md shadow-orange-500/25 group-hover:scale-110 transition-transform">
-                    0{step.step}
-                  </div>
-                  <span className="text-xs font-bold text-orange-800 bg-orange-50 px-3 py-1 rounded-full flex items-center border border-orange-100">
-                    <Clock className="w-3.5 h-3.5 mr-1" />
-                    {step.duration}
-                  </span>
-                </div>
-
-                {/* Step Title */}
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 leading-snug group-hover:text-orange-600 transition-colors">
-                  {step.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-sm text-slate-600 mb-5 leading-relaxed">
-                  {step.description}
-                </p>
-
-                {/* Deliverables list */}
-                <div className="pt-3.5 border-t border-slate-100 space-y-2 mb-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
-                    Bàn giao mỗi giai đoạn:
-                  </span>
-                  {step.deliverables.map((del, dIdx) => (
-                    <div key={dIdx} className="flex items-start text-sm text-slate-700 font-medium">
-                      <FileCheck className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span>{del}</span>
+              <div
+                data-aos="fade-up"
+                data-aos-delay={idx * 100}
+                className="h-full relative bg-white rounded-3xl p-6 sm:p-7 border border-orange-100 hover:border-orange-300 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between hover-lift group"
+              >
+                <div>
+                  {/* Step Number & Duration Tag */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-2xl bg-orange-600 text-white font-black text-lg flex items-center justify-center shadow-md shadow-orange-500/25 group-hover:scale-110 transition-transform">
+                      0{step.step}
                     </div>
-                  ))}
+                    <span className="text-xs font-bold text-orange-800 bg-orange-50 px-3 py-1 rounded-full flex items-center border border-orange-100">
+                      <Clock className="w-3.5 h-3.5 mr-1" />
+                      {step.duration}
+                    </span>
+                  </div>
+
+                  {/* Step Title */}
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 leading-snug group-hover:text-orange-600 transition-colors">
+                    {step.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-slate-600 mb-5 leading-relaxed">
+                    {step.description}
+                  </p>
+
+                  {/* Deliverables list */}
+                  <div className="pt-3.5 border-t border-slate-100 space-y-2 mb-4">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+                      Bàn giao mỗi giai đoạn:
+                    </span>
+                    {step.deliverables.map((del, dIdx) => (
+                      <div key={dIdx} className="flex items-start text-sm text-slate-700 font-medium">
+                        <FileCheck className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <span>{del}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Status indicator */}
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-500">
+                  <span>Giai đoạn {step.step}/5</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                 </div>
               </div>
-
-              {/* Status indicator */}
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-500">
-                <span>Giai đoạn {step.step}/5</span>
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-              </div>
-            </div>
+            </Interactive3DTilt>
           ))}
         </div>
       </div>

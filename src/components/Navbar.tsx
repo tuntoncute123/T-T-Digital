@@ -10,6 +10,7 @@ import {
   ChevronRight 
 } from 'lucide-react';
 import { COMPANY_INFO } from '../data/landingData';
+import { GsapMagneticButton } from './GsapMagneticButton';
 
 interface NavbarProps {
   onOpenConsultation: () => void;
@@ -125,15 +126,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>{COMPANY_INFO.hotline}</span>
               </a>
 
-              <Button
-                type="primary"
-                size="large"
-                onClick={onOpenConsultation}
-                className="rounded-xl font-bold bg-orange-600 hover:bg-orange-700 h-11 px-6 shadow-sm shadow-orange-500/20 flex items-center space-x-2"
-              >
-                <span>Nhận Tư Vấn Dự Án</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              <GsapMagneticButton strength={0.2} textStrength={0.1}>
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={onOpenConsultation}
+                  className="rounded-xl font-bold bg-orange-600 hover:bg-orange-700 h-11 px-6 shadow-sm shadow-orange-500/20 flex items-center space-x-2"
+                >
+                  <span>Nhận Tư Vấn Dự Án</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </GsapMagneticButton>
             </div>
 
             {/* Mobile Menu Hamburger Button */}

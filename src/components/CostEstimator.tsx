@@ -16,6 +16,8 @@ import {
 import { HandDrawnMarker, AnimatedMarkerText } from './HandDrawnMarker';
 import { PRICING_PACKAGES } from '../data/landingData';
 import { GsapFloatingOrbs } from './GsapFloatingOrbs';
+import { Interactive3DTilt } from './Interactive3DTilt';
+import { GsapMagneticButton } from './GsapMagneticButton';
 
 interface CostEstimatorProps {
   onRequestQuoteWithDetails: (details: {
@@ -216,80 +218,87 @@ export const CostEstimator: React.FC<CostEstimatorProps> = ({ onRequestQuoteWith
           {PRICING_PACKAGES.map((pkg, idx) => {
             const isHot = pkg.isPopular || pkg.id === 'pkg-ecommerce';
             return (
-              <div
+              <Interactive3DTilt
                 key={pkg.id}
-                data-aos="fade-up"
-                data-aos-delay={idx * 120}
-                className={`relative bg-white rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between hover-lift ${
-                  isHot
-                    ? 'border-orange-500 shadow-xl shadow-orange-500/15 ring-2 ring-orange-500/30'
-                    : 'border-orange-100 shadow-sm hover:border-orange-300'
-                }`}
+                maxTilt={6}
+                scale={1.02}
+                enableGlare={true}
+                className="h-full"
               >
-                {/* Popular or Special Badge */}
-                {pkg.badge && (
-                  <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 text-xs font-black px-3.5 py-1 rounded-full shadow-sm whitespace-nowrap ${
+                <div
+                  data-aos="fade-up"
+                  data-aos-delay={idx * 120}
+                  className={`h-full relative bg-white rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between hover-lift ${
                     isHot
-                      ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white animate-pulse'
-                      : 'bg-orange-100 text-orange-900 border border-orange-200'
-                  }`}>
-                    {pkg.badge}
-                  </div>
-                )}
+                      ? 'border-orange-500 shadow-xl shadow-orange-500/15 ring-2 ring-orange-500/30'
+                      : 'border-orange-100 shadow-sm hover:border-orange-300'
+                  }`}
+                >
+                  {/* Popular or Special Badge */}
+                  {pkg.badge && (
+                    <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 text-xs font-black px-3.5 py-1 rounded-full shadow-sm whitespace-nowrap z-20 ${
+                      isHot
+                        ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white animate-pulse'
+                        : 'bg-orange-100 text-orange-900 border border-orange-200'
+                    }`}>
+                      {pkg.badge}
+                    </div>
+                  )}
 
-                <div>
-                  <div className="pt-2 mb-4">
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug min-h-[48px] flex items-center">
-                      {pkg.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed min-h-[42px] line-clamp-3">
-                      {pkg.suitable}
-                    </p>
+                  <div>
+                    <div className="pt-2 mb-4">
+                      <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug min-h-[48px] flex items-center">
+                        {pkg.name}
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-1 leading-relaxed min-h-[42px] line-clamp-3">
+                        {pkg.suitable}
+                      </p>
+                    </div>
+
+                    {/* Price Banner */}
+                    <div className="py-3.5 px-2.5 sm:px-3 rounded-2xl bg-orange-50/80 border border-orange-100 mb-5 text-center">
+                      <span className="text-xl sm:text-2xl lg:text-xl xl:text-2xl font-black text-orange-600 tracking-tight block whitespace-nowrap">
+                        {pkg.priceEstimate}
+                      </span>
+                      <span className="text-xs font-semibold text-slate-600 block mt-1">
+                        {pkg.unit}
+                      </span>
+                    </div>
+
+                    {/* Time Estimate */}
+                    <div className="flex items-center text-xs font-bold text-slate-700 mb-4 px-1">
+                      <Clock className="w-4 h-4 text-orange-600 mr-2 flex-shrink-0" />
+                      <span>Thời gian bàn giao: {pkg.timeEstimate}</span>
+                    </div>
+
+                    {/* Features list */}
+                    <div className="space-y-2.5 mb-6 pt-3 border-t border-slate-100">
+                      {pkg.features.map((feat, fIdx) => (
+                        <div key={fIdx} className="flex items-start text-xs sm:text-sm text-slate-700 leading-snug">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  {/* Price Banner */}
-                  <div className="py-3.5 px-2.5 sm:px-3 rounded-2xl bg-orange-50/80 border border-orange-100 mb-5 text-center">
-                    <span className="text-xl sm:text-2xl lg:text-xl xl:text-2xl font-black text-orange-600 tracking-tight block whitespace-nowrap">
-                      {pkg.priceEstimate}
-                    </span>
-                    <span className="text-xs font-semibold text-slate-600 block mt-1">
-                      {pkg.unit}
-                    </span>
-                  </div>
-
-                  {/* Time Estimate */}
-                  <div className="flex items-center text-xs font-bold text-slate-700 mb-4 px-1">
-                    <Clock className="w-4 h-4 text-orange-600 mr-2 flex-shrink-0" />
-                    <span>Thời gian bàn giao: {pkg.timeEstimate}</span>
-                  </div>
-
-                  {/* Features list */}
-                  <div className="space-y-2.5 mb-6 pt-3 border-t border-slate-100">
-                    {pkg.features.map((feat, fIdx) => (
-                      <div key={fIdx} className="flex items-start text-xs sm:text-sm text-slate-700 leading-snug">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
+                  <div className="pt-3 border-t border-slate-100">
+                    <Button
+                      type={isHot ? 'primary' : 'default'}
+                      block
+                      onClick={() => handleSelectPackageDirectly(pkg.id)}
+                      className={`rounded-xl font-bold h-11 text-sm flex items-center justify-center space-x-1.5 ${
+                        isHot 
+                          ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-md shadow-orange-500/20' 
+                          : 'text-slate-800 hover:text-orange-600 hover:border-orange-500'
+                      }`}
+                    >
+                      <span>Chọn Gói &amp; Tùy Biến</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-
-                <div className="pt-3 border-t border-slate-100">
-                  <Button
-                    type={isHot ? 'primary' : 'default'}
-                    block
-                    onClick={() => handleSelectPackageDirectly(pkg.id)}
-                    className={`rounded-xl font-bold h-11 text-sm flex items-center justify-center space-x-1.5 ${
-                      isHot 
-                        ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-md shadow-orange-500/20' 
-                        : 'text-slate-800 hover:text-orange-600 hover:border-orange-500'
-                    }`}
-                  >
-                    <span>Chọn Gói &amp; Tùy Biến</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
+              </Interactive3DTilt>
             );
           })}
         </div>
@@ -495,17 +504,19 @@ export const CostEstimator: React.FC<CostEstimatorProps> = ({ onRequestQuoteWith
                 </div>
               </div>
 
-              {/* Action Button */}
-              <Button
-                type="primary"
-                block
-                size="large"
-                onClick={handleSendQuote}
-                className="rounded-xl font-bold bg-orange-600 hover:bg-orange-700 text-white h-13 text-sm sm:text-base shadow-lg shadow-orange-500/25 flex items-center justify-center space-x-2"
-              >
-                <span>Nhận Bản Báo Giá Đầy Đủ</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              {/* Action Button with GSAP Magnetic Hover Effect */}
+              <GsapMagneticButton strength={0.2} textStrength={0.1} className="w-full">
+                <Button
+                  type="primary"
+                  block
+                  size="large"
+                  onClick={handleSendQuote}
+                  className="rounded-xl font-bold bg-orange-600 hover:bg-orange-700 text-white h-13 text-sm sm:text-base shadow-lg shadow-orange-500/25 flex items-center justify-center space-x-2"
+                >
+                  <span>Nhận Bản Báo Giá Đầy Đủ</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </GsapMagneticButton>
 
               <p className="text-xs text-slate-500 text-center mt-3 leading-relaxed">
                 Kỹ sư T&amp;T Digital sẽ liên hệ phân tích chi tiết và tư vấn giải pháp tiết kiệm nhất cho bạn.

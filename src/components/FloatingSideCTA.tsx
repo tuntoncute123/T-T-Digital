@@ -9,6 +9,7 @@ import {
   FileText 
 } from 'lucide-react';
 import { COMPANY_INFO } from '../data/landingData';
+import { GsapMagneticButton } from './GsapMagneticButton';
 
 interface FloatingSideCTAProps {
   onOpenConsultation: () => void;
@@ -40,68 +41,76 @@ export const FloatingSideCTA: React.FC<FloatingSideCTAProps> = ({
 
   return (
     <>
-      {/* Desktop Fixed Side Buttons */}
+      {/* Desktop Fixed Side Buttons with GSAP Magnetic Effect */}
       <aside 
         aria-label="Liên hệ nhanh"
         className="hidden md:flex fixed right-4 bottom-8 z-40 flex-col items-end space-y-3 pointer-events-auto"
       >
         {/* Estimator Quick Launch */}
-        <button
-          onClick={onScrollToEstimator}
-          className="group flex items-center bg-white text-slate-800 p-2.5 rounded-2xl shadow-lg border border-slate-200/90 hover:border-orange-500 hover:shadow-xl transition-all duration-300 cursor-pointer"
-          title="Ước tính chi phí dự án"
-        >
-          <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold text-orange-600 px-0 group-hover:px-2">
-            Tính giá dự án
-          </span>
-          <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
-            <Calculator className="w-5 h-5" />
-          </div>
-        </button>
+        <GsapMagneticButton strength={0.3} textStrength={0.15}>
+          <button
+            onClick={onScrollToEstimator}
+            className="group flex items-center bg-white text-slate-800 p-2.5 rounded-2xl shadow-lg border border-slate-200/90 hover:border-orange-500 hover:shadow-xl transition-all duration-300 cursor-pointer"
+            title="Ước tính chi phí dự án"
+          >
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold text-orange-600 px-0 group-hover:px-2">
+              Tính giá dự án
+            </span>
+            <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
+              <Calculator className="w-5 h-5" />
+            </div>
+          </button>
+        </GsapMagneticButton>
 
         {/* Consultation Form Quick Trigger */}
-        <button
-          onClick={onOpenConsultation}
-          className="group flex items-center bg-white text-slate-800 p-2.5 rounded-2xl shadow-lg border border-slate-200/90 hover:border-orange-500 hover:shadow-xl transition-all duration-300 cursor-pointer"
-          title="Nhận tư vấn miễn phí"
-        >
-          <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold text-orange-600 px-0 group-hover:px-2">
-            Nhận tư vấn
-          </span>
-          <div className="w-10 h-10 rounded-xl bg-orange-100/70 text-orange-700 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
-            <FileText className="w-5 h-5" />
-          </div>
-        </button>
+        <GsapMagneticButton strength={0.3} textStrength={0.15}>
+          <button
+            onClick={onOpenConsultation}
+            className="group flex items-center bg-white text-slate-800 p-2.5 rounded-2xl shadow-lg border border-slate-200/90 hover:border-orange-500 hover:shadow-xl transition-all duration-300 cursor-pointer"
+            title="Nhận tư vấn miễn phí"
+          >
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold text-orange-600 px-0 group-hover:px-2">
+              Nhận tư vấn
+            </span>
+            <div className="w-10 h-10 rounded-xl bg-orange-100/70 text-orange-700 flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition-colors">
+              <FileText className="w-5 h-5" />
+            </div>
+          </button>
+        </GsapMagneticButton>
 
         {/* Zalo Direct Chat */}
-        <a
-          href="https://zalo.me/0849632852"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center bg-white text-slate-800 p-2.5 rounded-2xl shadow-lg border border-slate-200/90 hover:border-orange-500 hover:shadow-xl transition-all duration-300 cursor-pointer"
-          title="Chat Zalo hỗ trợ"
-        >
-          <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold text-orange-600 px-0 group-hover:px-2">
-            Chat Zalo
-          </span>
-          <div className="w-10 h-10 rounded-xl bg-sky-500 text-white font-black text-xs flex items-center justify-center shadow-xs">
-            Zalo
-          </div>
-        </a>
+        <GsapMagneticButton strength={0.3} textStrength={0.15}>
+          <a
+            href="https://zalo.me/0849632852"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center bg-white text-slate-800 p-2.5 rounded-2xl shadow-lg border border-slate-200/90 hover:border-orange-500 hover:shadow-xl transition-all duration-300 cursor-pointer"
+            title="Chat Zalo hỗ trợ"
+          >
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold text-orange-600 px-0 group-hover:px-2">
+              Chat Zalo
+            </span>
+            <div className="w-10 h-10 rounded-xl bg-sky-500 text-white font-black text-xs flex items-center justify-center shadow-xs">
+              Zalo
+            </div>
+          </a>
+        </GsapMagneticButton>
 
         {/* Hotline Ring */}
-        <a
-          href={`tel:${COMPANY_INFO.hotline.replace(/\./g, '')}`}
-          className="group flex items-center bg-orange-600 text-white p-2.5 rounded-2xl shadow-xl shadow-orange-500/30 hover:bg-orange-700 transition-all duration-300 cursor-pointer"
-          title="Gọi Hotline 24/7"
-        >
-          <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold text-white px-0 group-hover:px-2">
-            {COMPANY_INFO.hotline}
-          </span>
-          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-            <Phone className="w-5 h-5 animate-pulse" />
-          </div>
-        </a>
+        <GsapMagneticButton strength={0.3} textStrength={0.15}>
+          <a
+            href={`tel:${COMPANY_INFO.hotline.replace(/\./g, '')}`}
+            className="group flex items-center bg-orange-600 text-white p-2.5 rounded-2xl shadow-xl shadow-orange-500/30 hover:bg-orange-700 transition-all duration-300 cursor-pointer"
+            title="Gọi Hotline 24/7"
+          >
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold text-white px-0 group-hover:px-2">
+              {COMPANY_INFO.hotline}
+            </span>
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+              <Phone className="w-5 h-5 animate-pulse" />
+            </div>
+          </a>
+        </GsapMagneticButton>
 
         {/* Scroll To Top */}
         {showScrollTop && (

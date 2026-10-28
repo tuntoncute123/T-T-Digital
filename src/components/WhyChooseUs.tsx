@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { WHY_CHOOSE_US } from '../data/landingData';
 import { HandDrawnMarker, AnimatedMarkerText } from './HandDrawnMarker';
+import { Interactive3DTilt } from './Interactive3DTilt';
 
 export const WhyChooseUs: React.FC = () => {
   const getWhyIcon = (iconName: string) => {
@@ -55,27 +56,34 @@ export const WhyChooseUs: React.FC = () => {
           </p>
         </div>
 
-        {/* 6 Grid items */}
+        {/* 6 Grid items with Interactive 3D Tilt */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {WHY_CHOOSE_US.map((item, idx) => (
-            <div
+            <Interactive3DTilt
               key={item.id}
-              data-aos="fade-up"
-              data-aos-delay={idx * 100}
-              className="p-7 sm:p-8 rounded-3xl bg-white border border-orange-100/80 hover:border-orange-300 hover:shadow-xl transition-all duration-300 flex flex-col justify-start hover-lift group"
+              maxTilt={7}
+              scale={1.02}
+              enableGlare={true}
+              className="h-full"
             >
-              <div className="w-13 h-13 rounded-2xl bg-orange-50/80 border border-orange-100 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                {getWhyIcon(item.iconName)}
+              <div
+                data-aos="fade-up"
+                data-aos-delay={idx * 100}
+                className="h-full p-7 sm:p-8 rounded-3xl bg-white border border-orange-100/80 hover:border-orange-300 hover:shadow-xl transition-all duration-300 flex flex-col justify-start hover-lift group"
+              >
+                <div className="w-13 h-13 rounded-2xl bg-orange-50/80 border border-orange-100 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                  {getWhyIcon(item.iconName)}
+                </div>
+
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 leading-snug group-hover:text-orange-600 transition-colors">
+                  {item.title}
+                </h3>
+
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                  {item.description}
+                </p>
               </div>
-
-              <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 leading-snug group-hover:text-orange-600 transition-colors">
-                {item.title}
-              </h3>
-
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                {item.description}
-              </p>
-            </div>
+            </Interactive3DTilt>
           ))}
         </div>
 
