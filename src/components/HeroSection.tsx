@@ -18,7 +18,8 @@ import {
   Layers,
   FileCode2,
   Box,
-  Monitor
+  Monitor,
+  Sparkles
 } from 'lucide-react';
 import { COMPANY_INFO } from '../data/landingData';
 import { HandDrawnMarker, AnimatedMarkerText } from './HandDrawnMarker';
@@ -27,6 +28,7 @@ import { Interactive3DTilt } from './Interactive3DTilt';
 import { GsapFloatingOrbs } from './GsapFloatingOrbs';
 import { ThreeTechGlobe } from './ThreeTechGlobe';
 import { GsapMagneticButton } from './GsapMagneticButton';
+import { HeroMotionGraphic } from './HeroMotionGraphic';
 
 interface HeroSectionProps {
   onOpenConsultation: () => void;
@@ -39,7 +41,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onScrollToEstimator,
   onScrollToProjects,
 }) => {
-  const [showcaseMode, setShowcaseMode] = useState<'3d' | 'mockup'>('3d');
+  const [showcaseMode, setShowcaseMode] = useState<'motion' | '3d' | 'mockup'>('motion');
   const heroContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -191,8 +193,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     <span className="text-xs sm:text-sm font-mono text-slate-500 pl-1 hidden sm:inline">tt-digital-system.live</span>
                   </div>
 
-                  {/* Mode switcher tabs: 3D Core vs Mockup */}
+                  {/* Mode switcher tabs: Motion Graphic vs 3D Core vs Mockup */}
                   <div className="flex items-center p-1 bg-white/90 rounded-xl border border-orange-200/70 shadow-xs">
+                    <button
+                      onClick={() => setShowcaseMode('motion')}
+                      className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        showcaseMode === 'motion'
+                          ? 'bg-orange-600 text-white shadow-xs'
+                          : 'text-slate-600 hover:text-orange-600'
+                      }`}
+                    >
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Motion Graphic</span>
+                    </button>
                     <button
                       onClick={() => setShowcaseMode('3d')}
                       className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
@@ -202,7 +215,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       }`}
                     >
                       <Box className="w-3.5 h-3.5" />
-                      <span>3D WebGL</span>
+                      <span className="hidden sm:inline">3D WebGL</span>
+                      <span className="sm:hidden">3D</span>
                     </button>
                     <button
                       onClick={() => setShowcaseMode('mockup')}
@@ -218,9 +232,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   </div>
                 </div>
 
-                {/* Showcase Content: Either 3D Three.js Tech Core or Image Showcase */}
-                <div className="relative rounded-2xl overflow-hidden shadow-xs border border-orange-100/70 bg-gradient-to-b from-orange-50/50 via-white to-orange-50/30 min-h-[300px] sm:min-h-[340px] flex items-center justify-center">
-                  {showcaseMode === '3d' ? (
+                {/* Showcase Content: Motion Graphic, 3D Three.js Tech Core or Image Showcase */}
+                <div className="relative rounded-2xl overflow-hidden shadow-xs border border-orange-100/70 bg-gradient-to-b from-orange-50/50 via-white to-orange-50/30 min-h-[300px] sm:min-h-[360px] flex items-center justify-center">
+                  {showcaseMode === 'motion' ? (
+                    <HeroMotionGraphic />
+                  ) : showcaseMode === '3d' ? (
                     <ThreeTechGlobe />
                   ) : (
                     <img
